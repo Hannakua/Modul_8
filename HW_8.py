@@ -22,10 +22,6 @@ users_example = [
         {'Grigorenko Iryna': date(year=1997, month=4, day=30)}
         ]
 
-# print(week_future)
-
-dict_birthday={}
-
 current_date = datetime.now()
 next_week =current_date + timedelta(days=7)
 
@@ -45,16 +41,14 @@ def user_birth_weekend(date_birthday): # якщо день народження 
 def get_birthdays_per_week(users): # ф-ція вивода списку колег на тиждень вперед, яких треба привітати з др 
         dict_birth= defaultdict(list)
         for user in users:
-                for name, date_birth in user.items():
-                        date_dr_this_year = date(year=current_date.year, month=date_birth.month, day=date_birth.day)
-                        dr_ordinal = user_birth_weekend(date_dr_this_year)
-                        date_dr = date.fromordinal(dr_ordinal)
-                        if (next_week.toordinal() - dr_ordinal) in range(0, 7): 
-                                number_day=date_dr.weekday()
-                                day_name = days_name.get(number_day)                        
-                                if day_name not in dict_birth:  # якщо в словнику немає такого ключа-дня тижня, то додаємо його
-                                        dict_birth[day_name] = []
-                                dict_birth[day_name].append(name)       
+                name, date_birth = user.popitem()
+                date_dr_this_year = date(year=current_date.year, month=date_birth.month, day=date_birth.day)
+                dr_ordinal = user_birth_weekend(date_dr_this_year)
+                date_dr = date.fromordinal(dr_ordinal)
+                if (next_week.toordinal() - dr_ordinal) in range(0, 7): 
+                        number_day=date_dr.weekday()
+                        day_name = days_name.get(number_day)                      
+                        dict_birth[day_name].append(name)       
 
         for i in range(1,8): # виводимо впорядковано дні народження по дням тижня починаючи з завтрашнього дня
                 day_week = current_date + timedelta(days=i) 
